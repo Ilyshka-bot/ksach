@@ -1,8 +1,7 @@
 package com.psu.controller;
 
-import com.psu.entity.Client;
-import com.psu.entity.Employee;
 import com.psu.entity.User;
+import com.psu.service.ClientService;
 import com.psu.service.EmployeeService;
 import com.psu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AdminController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private ClientService clientService;
     @Autowired
     private EmployeeService employeeService;
 
@@ -34,6 +35,13 @@ public class AdminController {
         if (action.equals("delete")){
             User user = new User();
             user.setId(userId);
+            if(clientService.getClient(user) != null){
+                clientService.deleteClient(clientService.getClient(user));
+            }
+            if(employeeService.getEmployee(user) != null){
+                employeeService.deleteEmployee(employeeService.getEmployee(user));
+            }
+
             userService.deleteUser(userId);
         }
         return "redirect:/admin";

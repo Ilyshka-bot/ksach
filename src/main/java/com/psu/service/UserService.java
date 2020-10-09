@@ -85,20 +85,11 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean deleteUser(Long userId) {
-        if(employeeRepository.findById(userId).){
-            employeeRepository.deleteById(userId);
-        }
-        if(clientRepository.findById(userId).isPresent()){
-            clientRepository.deleteById(userId);
-        }
 
         if (userRepository.findById(userId).isPresent()) {
             userRepository.deleteById(userId);
             return true;
         }
-        //1gits
-
-
         return false;
     }
 
