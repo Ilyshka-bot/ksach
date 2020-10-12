@@ -21,18 +21,18 @@ public class Employee implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Post post;
 
-    private String category;
+    private String experience;
     private String date_start;
     private String date_end;
 
     public Employee(){ }
 
-    public String getCategory() {
-        return category;
+    public String getExperience() {
+        return experience;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setExperience(String experience) {
+        this.experience = experience;
     }
 
     public String getDate_start() {

@@ -1,5 +1,6 @@
 package com.psu.controller;
 
+import com.psu.entity.Employee;
 import com.psu.entity.User;
 import com.psu.service.ClientService;
 import com.psu.service.EmployeeService;
@@ -27,6 +28,7 @@ public class AdminController {
         return "admin";
     }
 
+
     @PostMapping("/admin")
     public String  deleteUser(@RequestParam(required = true, defaultValue = "" ) Long userId,
                               @RequestParam(required = true, defaultValue = "" ) String action,
@@ -39,7 +41,9 @@ public class AdminController {
                 clientService.deleteClient(clientService.getClient(user));
             }
             if(employeeService.getEmployee(user) != null){
-                employeeService.deleteEmployee(employeeService.getEmployee(user));
+                Employee employee = employeeService.getEmployee(user);
+                employee.setPost(null);
+                employeeService.deleteEmployee(employee);
             }
 
             userService.deleteUser(userId);

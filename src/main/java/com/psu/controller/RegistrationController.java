@@ -52,8 +52,6 @@ public class RegistrationController {
         model.addAttribute("employeeForm", new Employee());
         model.addAttribute("postForm", new Post());
 
-
-
         return "regEmp";
     }
 
@@ -89,7 +87,7 @@ public class RegistrationController {
 
         employeeService.saveEmployee(employeeForm);
 
-        return "admin";
+        return "redirect:/";
     }
 
     @GetMapping("/registration")

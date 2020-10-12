@@ -41,13 +41,13 @@
         <%--@elvariable id="employeeForm" type=""--%>
         <form:form method="POST" modelAttribute="employeeForm">
             <div>
-                <form:input type="text" path="category" placeholder="Category"></form:input>
+                <form:input type="text" path="experience" placeholder="Experience"></form:input>
             </div>
             <div>
                 <p>Выберите дату начала: <form:input type="date" name="calendar" path="date_start"></form:input>
             </div>
             <div>
-                <p>Выберите дату окончания: <form:input type="date" name="calendar" path="date_end"></form:input>
+                <p>Выберите дату окончания: <form:input type="date" name="calendar" path="date_end" value="0000-00-00"></form:input>
             </div>
             <%--@elvariable id="postForm" type=""--%>
             <form:form method="POST"  modelAttribute = "postForm">
