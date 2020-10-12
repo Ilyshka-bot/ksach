@@ -48,6 +48,7 @@ public class AdminController {
 
             userService.deleteUser(userId);
         }
+
         return "redirect:/admin";
     }
 
