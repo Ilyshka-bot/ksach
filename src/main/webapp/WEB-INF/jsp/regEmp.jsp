@@ -22,6 +22,7 @@
         </div>
         <div>
             <form:input type="password" path="password" placeholder="Password"></form:input>
+                ${passwordEmpty}
         </div>
         <div>
             <form:input type="password" path="passwordConfirm"
@@ -36,18 +37,29 @@
         </div>
         <div>
             <form:input type="text" path="fullname" placeholder="Fullname"></form:input>
+            ${fullnameError}
         </div>
 
         <%--@elvariable id="employeeForm" type=""--%>
         <form:form method="POST" modelAttribute="employeeForm">
             <div>
                 <form:input type="text" path="experience" placeholder="Experience"></form:input>
+                ${experienceError}
             </div>
             <div>
-                <p>Выберите дату начала: <form:input type="date" name="calendar" path="date_start"></form:input>
+                <p>Выберите дату начала: <form:input type="date" name="calendar" path="date_start" id = "current"></form:input>
+                <script>
+                    function currentDate(){
+                        var d = new Date(),
+                        new_value = d.toISOString().slice(0,10);
+                        document.getElementById("current").value=new_value;
+                    }
+                    currentDate();
+                </script>
             </div>
             <div>
-                <p>Выберите дату окончания: <form:input type="date" name="calendar" path="date_end" value="0000-00-00"></form:input>
+                <p>Выберите дату начала: <form:input type="date" name="calendar" path="date_end" value="0000-00-00"></form:input>
+                ${dateendError}
             </div>
             <%--@elvariable id="postForm" type=""--%>
             <form:form method="POST"  modelAttribute = "postForm">

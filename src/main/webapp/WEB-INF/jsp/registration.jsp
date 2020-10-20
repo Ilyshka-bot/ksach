@@ -22,6 +22,8 @@
         </div>
         <div>
             <form:input type="password" path="password" placeholder="Password"></form:input>
+            <form:errors path="password"></form:errors>
+                ${passwordEmpty}
         </div>
         <div>
             <form:input type="password" path="passwordConfirm"
@@ -36,11 +38,15 @@
         </div>
         <div>
             <form:input type="text" path="fullname" placeholder="Fullname"></form:input>
+            <form:errors path="fullname"></form:errors>
+                ${fullnameError}
         </div>
         <%--@elvariable id="clientForm" type=""--%>
         <form:form method="POST" modelAttribute="clientForm">
             <div>
                 <form:input type="text" path="passportData" placeholder="passport data"></form:input>
+                <form:errors path="passportData"></form:errors>
+                    ${passportError}
             </div>
             <button type="submit">Зарегистрироваться</button>
         </form:form>

@@ -1,7 +1,5 @@
 package com.psu.entity;
 
-import org.hibernate.validator.constraints.UniqueElements;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -16,6 +14,14 @@ public class Client implements Serializable{
     private Long id;
 
     private String passportData;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Client(){ }
 

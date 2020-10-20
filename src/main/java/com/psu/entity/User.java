@@ -20,13 +20,13 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@GenericGenerator(name="system-uuid", strategy = "uuid")
     private Long id;
-    @Size(min=2, message = "Не меньше 2 знаков")
+    //@Size(min=2, message = "Не меньше 2 знаков")
     private String username;
-    @Size(min=2, message = "Не меньше 2 знаков")
+   // @Size(min=2, message = "Не меньше 2 знаков")
     private String password;
 
     private String mail;
-    @Size(min=3, message = "Не меньше 3 знаков")
+   // @Size(min=3, message = "Не меньше 3 знаков")
     private String fullname;
 
     @Transient

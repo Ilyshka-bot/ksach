@@ -27,6 +27,15 @@ public class Employee implements Serializable {
 
     public Employee(){ }
 
+    public Employee(User user, Long id, Post post, String experience, String date_start, String date_end) {
+        this.user = user;
+        this.id = id;
+        this.post = post;
+        this.experience = experience;
+        this.date_start = date_start;
+        this.date_end = date_end;
+    }
+
     public String getExperience() {
         return experience;
     }

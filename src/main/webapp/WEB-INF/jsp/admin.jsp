@@ -18,11 +18,11 @@
     <table>
         <thead>
         <th>ID</th>
-        <th>UserName</th>
-        <th>Password</th>
-        <th>Mail</th>
-        <th>FullName</th>
-        <th>Roles</th>
+        <th>Имя_пользователя</th>
+        <th>Пароль</th>
+        <th>Почта</th>
+        <th>ФИО</th>
+        <th>Роль</th>
         </thead>
         <c:forEach items="${allUsers}" var="user">
             <tr>
@@ -32,7 +32,9 @@
                 <td>${user.mail}</td>
                 <td>${user.fullname}</td>
                 <td>
-                    <c:forEach items="${user.roles}" var="role">${role.name}; </c:forEach>
+                    <c:forEach items="${user.roles}" var="role">
+                        ${role.name};
+                    </c:forEach>
                 </td>
                 <td>
                     <form action="${pageContext.request.contextPath}/admin" method="post">
