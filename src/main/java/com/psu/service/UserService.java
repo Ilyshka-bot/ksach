@@ -6,6 +6,7 @@ import com.psu.repository.EmployeeRepository;
 import com.psu.repository.RoleRepository;
 import com.psu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -167,6 +168,7 @@ public class UserService implements UserDetailsService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }
+
     public User getUser() {
         String username = getCurrentUsername();
         CriteriaQuery<User> criteriaQuery = em.getCriteriaBuilder().createQuery(User.class);

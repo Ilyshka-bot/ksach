@@ -41,7 +41,6 @@ public class RegistrationController {
 
         return "login";
     }
-
     @GetMapping("/regEmp")
     public String admin(Model model){
         model.addAttribute("userForm", new User());

@@ -12,10 +12,19 @@
 <body>
 <div>
     <h2>Список не принятых заказов</h2>
+    <form action="${pageContext.request.contextPath}/clientNotOrderList" method="POST">
+        <input type="hidden" name="action" value="cancel"/>
+        <div>
+        <input type="text" placeholder="Serial number" name = "serial_id">
+        <form:errors path="serial_id"></form:errors>
+        ${serialError}
+        </div>
+        <button type="submit">Отменить заявку</button>
+    </form>
     <div>
         <table>
             <thead>
-            <th>ID</th>
+            <th>Порядковый_номер</th>
             <th>Дата_заявки</th>
             <th>Название_экскурсии</th>
             </thead>

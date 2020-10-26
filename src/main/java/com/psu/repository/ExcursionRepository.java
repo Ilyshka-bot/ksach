@@ -4,4 +4,5 @@ import com.psu.entity.Excursion;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ExcursionRepository  extends JpaRepository<Excursion, Long> {
+    Excursion findExcursionById(Long id);
 }

@@ -6,52 +6,57 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/verticalAndMargin.css">
     <title>Регистрация</title>
 </head>
 
 <body>
-<div>
+    <div class="container h-100 text-center" >
+        <div class="row h-100  justify-content-center align-items-center" style="flex-direction: column">
     <%--@elvariable id="userForm" type=""--%>
         <form:form method="POST" modelAttribute="userForm">
         <h2>Регистрация</h2>
         <div>
-            <form:input type="text" path="username" placeholder="Username"
-                        autofocus="true"></form:input>
             <form:errors path="username"></form:errors>
-                ${usernameError}
-        </div>
+            <div> <span style="color: red; "> ${usernameError}</span></div>
+          <form:input type="text" path="username" placeholder="Имя пользователя" cssClass="input"
+                        autofocus="true"></form:input>
+
         <div>
-            <form:input type="password" path="password" placeholder="Password"></form:input>
             <form:errors path="password"></form:errors>
-                ${passwordEmpty}
+            <div><span style="color: red; ">${passwordEmpty}</span></div>
+            <form:input type="password" path="password" placeholder="Пароль" cssClass="input"></form:input>
         </div>
         <div>
-            <form:input type="password" path="passwordConfirm"
-                        placeholder="Confirm your password"></form:input>
-            <form:errors path="password"></form:errors>
-                ${passwordError}
+            <form:errors path="passwordConfirm"></form:errors>
+            <div><span style="color: red; ">${passwordError}</span></div>
+            <form:input type="password" path="passwordConfirm" cssClass="input"
+                        placeholder="Подтверждение пароля" ></form:input>
         </div>
         <div>
-            <form:input type="text" path="mail" placeholder="Mail"></form:input>
             <form:errors path="mail"></form:errors>
-                ${mailError}
-        </div>
+            <div>  <span style="color: red; "> ${mailError}</span></div>
+            <form:input type="text" path="mail" placeholder="Почта" cssClass="input"></form:input>
         <div>
-            <form:input type="text" path="fullname" placeholder="Fullname"></form:input>
             <form:errors path="fullname"></form:errors>
-                ${fullnameError}
+            <div><span style="color: red; ">${fullnameError}</span></div>
+            <form:input type="text" path="fullname" placeholder="ФИО" cssClass="input"></form:input>
         </div>
         <%--@elvariable id="clientForm" type=""--%>
         <form:form method="POST" modelAttribute="clientForm">
             <div>
-                <form:input type="text" path="passportData" placeholder="passport data"></form:input>
                 <form:errors path="passportData"></form:errors>
-                    ${passportError}
+                <div><span style="color: red; "> ${passportError}</span></div>
+                <form:input type="text" path="passportData" placeholder="Паспортные данные" cssClass="input"></form:input>
             </div>
-            <button type="submit">Зарегистрироваться</button>
+                 <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
         </form:form>
     </form:form>
-    <a href="/">Главная</a>
-</div>
+            <div>
+        <a href="/">Главная</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

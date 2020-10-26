@@ -1,7 +1,7 @@
 package com.psu.service;
 
 import com.psu.entity.*;
-import com.psu.enumEmployee.ExcursionsName;
+import com.psu.enums.ExcursionsName;
 import com.psu.repository.EmployeeRepository;
 import com.psu.repository.GraphicRepository;
 import com.psu.repository.OrderRepository;

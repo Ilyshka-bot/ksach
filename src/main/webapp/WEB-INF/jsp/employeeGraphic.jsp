@@ -21,7 +21,7 @@
     <div class="table">
         <table>
             <thead>
-            <th>ID</th>
+            <th>Порядковый_номер</th>
             <th>Название_экскурсии</th>
             <th>Статус</th>
             <th>Дата_начала</th>

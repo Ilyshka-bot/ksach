@@ -1,6 +1,7 @@
 package com.psu.service;
 
 import com.psu.entity.*;
+import com.psu.repository.ExcursionRepository;
 import com.psu.repository.OrderRepository;
 import com.psu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +33,16 @@ public class OrderService {
     @Autowired
     private EmployeeService employeeService;
     @Autowired
+    private ExcursionRepository excursionRepository;
+    @Autowired
     private JdbcTemplate t;
 
-    public void saveOrder(ViewExcursion viewExcursion){
+    public void saveOrder(String name){
         List<Excursion> allExc = clientService.allExcursion();
         Order order = new Order();
 
-        if(viewExcursion.getName().equals("simple")) viewExcursion.setName("обычные");
-        else if(viewExcursion.getName().equals("study")) viewExcursion.setName("учебные");
-        else if(viewExcursion.getName().equals("many")) viewExcursion.setName("массовые");
-
         for(Excursion ex: allExc){
-            if(ex.getViewExcursion().getName().equals(viewExcursion.getName())){
+            if(ex.getName().equals(name)){
                 order.setExcursion(ex);
                 break;
             }
@@ -58,6 +57,7 @@ public class OrderService {
 
         orderRepository.save(order);
     }
+
 
     public List<Order> getMyOrders(){
         List<Order> orders = new LinkedList<>();

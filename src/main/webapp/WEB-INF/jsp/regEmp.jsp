@@ -22,12 +22,13 @@
         </div>
         <div>
             <form:input type="password" path="password" placeholder="Password"></form:input>
-                ${passwordEmpty}
+            <form:errors path="password"></form:errors>
+            ${passwordEmpty}
         </div>
         <div>
             <form:input type="password" path="passwordConfirm"
                         placeholder="Confirm your password"></form:input>
-            <form:errors path="password"></form:errors>
+            <form:errors path="passwordConfirm"></form:errors>
                 ${passwordError}
         </div>
         <div>
@@ -37,7 +38,8 @@
         </div>
         <div>
             <form:input type="text" path="fullname" placeholder="Fullname"></form:input>
-            ${fullnameError}
+            <form:errors path="fullname"></form:errors>
+                ${fullnameError}
         </div>
 
         <%--@elvariable id="employeeForm" type=""--%>

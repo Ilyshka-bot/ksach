@@ -6,27 +6,40 @@ import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 /*
 INSERT INTO public.t_excursion(
-	id, description, name, price, "time", view_excursion_id)
-	VALUES (1, 'описание1', 'экскурсия1', '100', '1 час', 1),
-	 (2, 'описание2', 'экскурсия2', '200', '1.5 часа', 2),
-	 (3, 'описание3', 'экскурсия3', '300', '2 часа', 3);
+	 description, name, price, "time", view_excursion_id)
+	VALUES ( 'описание1', 'экскурсия1', 100, '1:00', 1),
+	 ( 'описание2', 'экскурсия2', 200, '1:30', 2),
+	 ( 'описание3', 'экскурсия3', 300, '2:00', 3);
 * */
 @Entity
 @Table(name = "t_excursion")
 public class Excursion {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne
     private ViewExcursion viewExcursion;
 
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @ManyToOne
+    private Client client;
+
     private String name;
     private String description;
-    private String price;
+    private Long price;
     private String time;
 
     public Excursion(){ }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
     public Long getId() { return id; }
 
@@ -56,11 +69,11 @@ public class Excursion {
         this.description = description;
     }
 
-    public String getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
