@@ -13,7 +13,9 @@
     <script>
         function clickOrder(f) {
             let n = f.name.selectedIndex;
+
             if(n)
+
                 alert(f.name.options[n].value + " успешно заказана.");
         }
         function getNewDescrtp(){
