@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ClientService {
@@ -48,15 +47,23 @@ public class ClientService {
     }
 
     public void deleteClient(Client client){
+        client.getUser().setRole(null);
         clientRepository.delete(client);
     }
 
     public void insertExcursion(ListObjectExcursion listObjectExcursion, ViewExcursion viewExcursion){
 
-       // ObjectExcursion objectExcursion = objectExcurtionRepository.findObjectExcursionById(1L);
-        //System.out.println(objectExcursion.getName() + " " + objectExcursion.getPrice());
         Excursion excursion = new Excursion();
         excursion.setName(listObjectExcursion.getName());
+        Set<ObjectExcursion> objectExcursions = new HashSet<>();
+
+        for(String o : listObjectExcursion.getObjects()){
+            ObjectExcursion objectExcursion = objectExcurtionRepository.findObjectExcursionByName(o);
+            objectExcursions.add(objectExcursion);
+        }
+
+        excursion.setObjectExcursion(objectExcursions);
+
         int resTimeDuration = 0;
         excursion.setPrice(0L);
         excursion.setDescription("");
@@ -74,22 +81,22 @@ public class ClientService {
             viewExcursion = viewExcursionRepository.findViewExcursionByTypeName(viewExcursion.getTypeName());
         }
 
-        for(String object : listObjectExcursion.getObjects()){
+        for(ObjectExcursion object : excursion.getObjectExcursion()){
 
-            if(object.equals(ObjectsName.VR.name())){
-                resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа VR", 1L);
+            if(object.getName().equals(ObjectsName.VR.name())){
+                resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа VR", 1L,object);
 
-            }else if(object.equals(ObjectsName.Graphic.name())){
-                resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа неисправности", 2L);
+            }else if(object.getName().equals(ObjectsName.Graphic.name())){
+                resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа неисправности", 2L,object);
 
-            }else if(object.equals(ObjectsName.Labirinth.name())){
-                resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа Лабиринт", 3L);
+            }else if(object.getName().equals(ObjectsName.Labirinth.name())){
+                resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа Лабиринт", 3L,object);
 
-            }else if(object.equals(ObjectsName.Storm.name())){
-                resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа гроза", 4L);
+            }else if(object.getName().equals(ObjectsName.Storm.name())){
+                resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа гроза", 4L,object);
 
-            }else if(object.equals(ObjectsName.Numbers.name())){
-                resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа SOS", 5L);
+            }else if(object.getName().equals(ObjectsName.Numbers.name())){
+                resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа SOS", 5L, object);
             }
         }
         String resTime = "";
@@ -114,6 +121,7 @@ public class ClientService {
         }
         else
             resTime = resTimeDuration + " минут";
+
         excursion.setTime(resTime);
         excursion.setViewExcursion(viewExcursion);
         String resultDescription = excursion.getDescription();//убираем запятую в конце описания
@@ -131,10 +139,9 @@ public class ClientService {
 
     }
 
-    public int getTimeAndSetExcursionObject(Excursion excursion, String name, Long id){
+    public int getTimeAndSetExcursionObject(Excursion excursion, String name, Long id, ObjectExcursion objectExcursion){
         String getDescript = excursion.getDescription();
         Long getPrice = excursion.getPrice();
-        ObjectExcursion objectExcursion = objectExcurtionRepository.findObjectExcursionById(id);
         excursion.setDescription(getDescript + " " + name + ",");
         excursion.setPrice(getPrice + objectExcursion.getPrice());
         return Integer.parseInt(objectExcursion.getTimeDuration());

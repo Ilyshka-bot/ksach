@@ -1,18 +1,19 @@
 package com.psu.object;
 
 import javax.persistence.OneToMany;
+import java.util.List;
 
 public class ListObjectExcursion {
     String name;
-    private String[] objects;
+    private List<String> objects;
 
     public ListObjectExcursion(){ }
 
-    public String[] getObjects() {
+    public List<String> getObjects() {
         return objects;
     }
 
-    public void setObjects(String[] objects) {
+    public void setObjects(List<String> objects) {
         this.objects = objects;
     }
 

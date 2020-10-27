@@ -131,7 +131,7 @@ public class ClientController{
                                         Model model){
         boolean resultCheck = true;
 
-        if(objectsForm.getObjects().length == 0){
+        if(objectsForm.getObjects().size() == 0){
             model.addAttribute("objectsError","Выберите хотя бы одну программу");
             resultCheck = false;
         }

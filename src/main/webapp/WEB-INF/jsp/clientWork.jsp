@@ -20,10 +20,10 @@
         }
         function getNewDescrtp(){
 
-            var newString = 'sdfsdf, sdfsdfsd,s dfsdfsd,dssd'.replace(/,(.*?)/, "\n");
+            var newString = 'sdfsdf, sdfsdfsd, s dfsdfsd, dssd'.replace(/\, /gi, "\n");
             console.log(newString);
         }
-
+        getNewDescrtp();
 
         document.addEventListener("DOMContentLoaded",tableDown);//сработает после перенаправления на страницу error
 

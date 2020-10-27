@@ -31,11 +31,7 @@
                 <td>${user.password}</td>
                 <td>${user.mail}</td>
                 <td>${user.fullname}</td>
-                <td>
-                    <c:forEach items="${user.roles}" var="role">
-                        ${role.name};
-                    </c:forEach>
-                </td>
+                <td>${user.role.name}</td>
                 <td>
                     <form action="${pageContext.request.contextPath}/admin" method="post">
                         <input type="hidden" name="userId" value="${user.id}"/>

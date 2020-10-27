@@ -1,5 +1,6 @@
 package com.psu.entity;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +10,13 @@ import java.util.Collection;
 import java.util.Set;
 import javax.persistence.*;
 
-/*UPDATE public.t_user_roles
-	SET roles_id = 2
-	WHERE user_id = 1;*/
+// for admin
+/*update t_user
+set roles_id = 2
+where id = 1
+
+delete from t_client where id = 1
+*/
 
 @Entity
 @Table(name = "t_user")
@@ -31,19 +36,21 @@ public class User implements UserDetails {
 
     @Transient
     private String passwordConfirm;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+
+    //@Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Role role;
 
     public User() {
     }
 
-    public User(@Size(min = 2, message = "Не меньше 2 знаков") String username, @Size(min = 2, message = "Не меньше 2 знаков") String password, String mail, @Size(min = 3, message = "Не меньше 3 знаков") String fullname, String passwordConfirm, Set<Role> roles) {
+    public User(@Size(min = 2, message = "Не меньше 2 знаков") String username, @Size(min = 2, message = "Не меньше 2 знаков") String password, String mail, @Size(min = 3, message = "Не меньше 3 знаков") String fullname, String passwordConfirm, Role role) {
         this.username = username;
         this.password = password;
         this.mail = mail;
         this.fullname = fullname;
         this.passwordConfirm = passwordConfirm;
-        this.roles = roles;
+        this.role = role;
     }
 
     public Long getId() {
@@ -53,7 +60,6 @@ public class User implements UserDetails {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getMail() {
         return mail;
@@ -100,9 +106,9 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+
+   public Collection<? extends GrantedAuthority> getAuthorities() {
+        return (Collection<? extends GrantedAuthority>) getRole();
     }
 
     @Override
@@ -122,12 +128,12 @@ public class User implements UserDetails {
         this.passwordConfirm = passwordConfirm;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
 }

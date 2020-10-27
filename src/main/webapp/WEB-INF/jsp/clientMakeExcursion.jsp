@@ -24,8 +24,6 @@
 
            </div>
         <div>
-<%--            <input type="checkbox" class="btn-check" path="objects" id="objects" autocomplete="off">--%>
-<%--            <label class="btn btn-outline-primary" for="objects">Программа с использованием VR</label><br>--%>
             <form:checkbox class="btn-check" path="objects" value="VR" id="objects1"/>
     <form:label path="objects" for="objects1" style='width: 500px'>Программа с использованием VR</form:label><br>
             <form:checkbox path="objects" value="Graphic" id="objects2"/>

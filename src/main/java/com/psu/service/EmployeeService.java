@@ -44,6 +44,8 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Employee employee){
+
+        employee.getUser().setRole(null);
         employeeRepository.delete(employee);
     }
 

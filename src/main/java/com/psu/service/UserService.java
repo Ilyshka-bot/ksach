@@ -56,7 +56,8 @@ public class UserService implements UserDetailsService {
 
     public void saveUser(User user) {
 
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        Role role = roleRepository.findRoleById(1L);
+        user.setRole(role);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
@@ -89,7 +90,8 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setRoles(Collections.singleton(new Role(3L, "ROLE_EMPLOYEE")));
+        Role role = roleRepository.findRoleById(3L);
+        user.setRole(role);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
@@ -98,7 +100,9 @@ public class UserService implements UserDetailsService {
     public boolean deleteUser(Long userId) {
 
         if (userRepository.findById(userId).isPresent()) {
-            userRepository.deleteById(userId);
+            User user = userRepository.findUserById(userId);
+            user.setRole(null);
+            userRepository.delete(user);
             return true;
         }
         return false;
@@ -158,8 +162,7 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
 
-        for(Role role : user.getRoles())
-            grantedAuthoritySet.add(new SimpleGrantedAuthority(role.getName()));
+        grantedAuthoritySet.add(new SimpleGrantedAuthority(user.getRole().getName()));
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),grantedAuthoritySet);
     }

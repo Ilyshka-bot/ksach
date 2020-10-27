@@ -1,8 +1,10 @@
 package com.psu.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 /*
 insert into t_object (id, name, type,price,time_duration) values (1, 'VR', 'hard',20, 30),
