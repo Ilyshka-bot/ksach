@@ -6,6 +6,7 @@ import com.psu.repository.EmployeeRepository;
 import com.psu.repository.RoleRepository;
 import com.psu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,6 +45,8 @@ public class UserService implements UserDetailsService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     ClientRepository clientRepository;
+    @Autowired
+    private JdbcTemplate t;
 
     public User findUserById(Long userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
@@ -55,10 +58,10 @@ public class UserService implements UserDetailsService {
     }
 
     public void saveUser(User user) {
-
         Role role = roleRepository.findRoleById(1L);
         user.setRole(role);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
         userRepository.save(user);
 
     }
@@ -186,6 +189,20 @@ public class UserService implements UserDetailsService {
         } catch (NoResultException e) {
             return new User();
         }
+    }
+
+    public List<Map<String, Object>> report() {
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        for (User product : userRepository.findAll()) {
+            Map<String, Object> item = new HashMap<String, Object>();
+            item.put("id", product.getId());
+            item.put("username", product.getUsername());
+            item.put("fullname", product.getFullname());
+            item.put("name", product.getRole().getName());
+            item.put("mail", product.getMail());
+            result.add(item);
+        }
+        return result;
     }
 
 }

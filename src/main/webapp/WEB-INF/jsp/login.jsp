@@ -35,7 +35,7 @@
                    autofocus="true"/><br>
             <input name="password" type="password" placeholder="Пароль" class="input"/>
             <h4><a href="/registration" style="font-size: 16px">Зарегистрироваться</a></h4>
-            <button type="submit" class="btn btn-primary" id="button">Войти</button>
+        <button type="submit" class="btn btn-primary" id="button">Войти</button>
             </form>
         </div>
     </div>

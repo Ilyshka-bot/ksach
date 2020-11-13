@@ -5,19 +5,20 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Log in with your account</title>
-    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
+    <title>Список выполненных заявок</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/verticalAndMargin.css">
 </head>
 
 <body>
-
-<div>
-    <table>
-        <thead>
+<div style="text-align: center;margin: 20px;">
+    <table class="table table-striped " id="table">
+        <thead class="thead-dark" >
         <th>Порядковый_номер</th>
-        <th>Выполнено/Не_выполнено</th>
-        <th>Имя_клиента_заказавшего</th>
+        <th>Статус</th>
+        <th>Имя_пользователя_заказчика</th>
         <th>Название_экскурсии</th>
+        <th>Описание</th>
         </thead>
         <c:forEach items="${ordersComplete}" var="order">
             <tr>
@@ -25,10 +26,11 @@
                 <td>${order.completeOrNot}</td>
                 <td>${order.userOrder.username}</td>
                 <td>${order.excursion.name}</td>
+                <td>${order.excursion.description}</td>
             </tr>
         </c:forEach>
     </table>
-    <a href="/employeeWork">Назад</a>
+    <button type="submit" class="btn btn-outline-primary" id="b1" onclick="location.href='/employeeWork'">Назад</button>
 </div>
 </body>
 </html>

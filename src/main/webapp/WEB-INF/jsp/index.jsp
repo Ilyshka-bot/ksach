@@ -29,7 +29,7 @@
     <h4><a href="/clientWork">Заказать экскурсию</a></h4>
     </sec:authorize>
     <sec:authorize access="hasRole('EMPLOYEE')">
-    <h4><a href="/employeeWork">Заявки, клиенты, график(только сотрудник)</a></h4>
+    <h4><a href="/employeeWork">Работа с заказами</a></h4>
     </sec:authorize>
     <sec:authorize access="hasRole('ADMIN')">
     <h4><a href="/admin">Панель админа</a></h4>

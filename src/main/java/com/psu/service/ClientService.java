@@ -70,16 +70,14 @@ public class ClientService {
 
         if(viewExcursion.getTypeName().equals("simple")){
             viewExcursion.setTypeName("обычные");
-            viewExcursion = viewExcursionRepository.findViewExcursionByTypeName(viewExcursion.getTypeName());
         }
         else if(viewExcursion.getTypeName().equals("study")){
             viewExcursion.setTypeName("учебные");
-            viewExcursion = viewExcursionRepository.findViewExcursionByTypeName(viewExcursion.getTypeName());
         }
         else if(viewExcursion.getTypeName().equals("many")){
             viewExcursion.setTypeName("массовые");
-            viewExcursion = viewExcursionRepository.findViewExcursionByTypeName(viewExcursion.getTypeName());
         }
+        viewExcursion = viewExcursionRepository.findViewExcursionByTypeName(viewExcursion.getTypeName());
 
         for(ObjectExcursion object : excursion.getObjectExcursion()){
 
@@ -128,15 +126,24 @@ public class ClientService {
         resultDescription = resultDescription.substring(0,resultDescription.length() - 1);
         excursion.setDescription(resultDescription);
 
-        String OBJECT_QUERY = "insert into public.t_excursion(name, description, price, time, client_id, view_excursion_id) " +
-                "values (?, ?, ?, ?, ?, ?)";
-
         Client client = getClient(userService.getUser());
-        t.update(OBJECT_QUERY, excursion.getName(), excursion.getDescription(), excursion.getPrice(),
+        t.update("call insertExcursion(?, ?, ?, ?,?,?)", excursion.getName(), excursion.getDescription(), excursion.getPrice(),
                 excursion.getTime(),
                 client.getId() ,
                 excursion.getViewExcursion().getId());
 
+    }
+
+    public boolean checkNameExcursion(String nameExc){
+
+        List<Excursion> excursions = excursionRepository.findAll();
+        for(Excursion excursion : excursions){
+            if(excursion.getName().equals(nameExc)){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public int getTimeAndSetExcursionObject(Excursion excursion, String name, Long id, ObjectExcursion objectExcursion){
@@ -175,7 +182,6 @@ public class ClientService {
                 or.setUserGet(null);
                 or.setUserOrder(null);
                 orderRepository.delete(or);
-                //   System.out.println(or.getId());
             }
             excursionRepository.delete(delExc);
             return true;
@@ -185,7 +191,6 @@ public class ClientService {
 
     public boolean cancelOrder(Long id){
         List<Order> orders = orderService.getNotMyOrder();
-        Long clientId = 0L;
         try {
             for(Order o : orders){
                 if(o.getId().equals(id)){
@@ -196,9 +201,7 @@ public class ClientService {
                 }
             }
         }catch (NullPointerException nu) {
-            System.out.println(clientId);
         }
-
         return false;
     }
     /*public class objectMapper implements RowMapper<Excursion> {

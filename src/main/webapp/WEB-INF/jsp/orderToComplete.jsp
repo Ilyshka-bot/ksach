@@ -5,18 +5,20 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Log in with your account</title>
-    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
+    <title>Список заявок доступных для выполнения</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/verticalAndMargin.css">
 </head>
 
 <body>
 
-<div>
-    <table>
-        <thead>
+<div style="text-align: center;margin: 20px">
+    <table class="table table-striped" id="table">
+        <thead class="thead-dark" >
         <th>Порядковый_номер</th>
-        <th>Имя_пользователя_заказавшего</th>
+        <th>Имя_пользователя_заказчика</th>
         <th>Название_экскурсии</th>
+        <th><button type="submit" class="btn btn-outline-primary" id="b1" onclick="location.href='/employeeWork'">Назад</button></th>
         </thead>
         <c:forEach items="${ordersToComplete}" var="order">
             <tr>
@@ -27,13 +29,12 @@
                     <form action="${pageContext.request.contextPath}/orderToComplete" method="post">
                         <input type="hidden" name="orderId" value="${order.id}"/>
                         <input type="hidden" name="action" value="get"/>
-                        <button type="submit">Принять</button>
+                        <button type="submit" class="btn btn-success">Принять</button>
                     </form>
                 </td>
             </tr>
         </c:forEach>
     </table>
-    <a href="/employeeWork">Назад</a>
 </div>
 </body>
 </html>

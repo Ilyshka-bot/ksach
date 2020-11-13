@@ -2,6 +2,7 @@ package com.psu.service;
 
 import com.psu.entity.*;
 import com.psu.repository.ExcursionRepository;
+import com.psu.repository.GraphicRepository;
 import com.psu.repository.OrderRepository;
 import com.psu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class OrderService {
     private EmployeeService employeeService;
     @Autowired
     private ExcursionRepository excursionRepository;
+    @Autowired
+    private GraphicRepository graphicRepository;
     @Autowired
     private JdbcTemplate t;
 
@@ -115,19 +118,29 @@ public class OrderService {
 
         t.update(ORDER_QUERY,userService.getUser().getId(),order_id);
     }
-    public void employeeCompleteOrder(Long order_id){
+    public boolean employeeCompleteOrder(Long order_id){
+
+        Order order = orderRepository.findOrderById(order_id);
+        GraphicEmployee graphicEmployee = graphicRepository.findGraphicEmployeeByOrder(order);
+
+        if(graphicEmployee.getDateStart().equals("") && graphicEmployee.getTimeStart().equals("")){
+            return false;
+        }
+
         String ORDER_QUERY = "UPDATE public.t_order" +
                 " SET complete_or_not = 'complete'" +
                 " WHERE id = ?;";
 
         t.update(ORDER_QUERY,order_id);
+        return true;
     }
 
     public List<Order> getNotCompleteOrdersEmployee(){
 
-        String ORDER_QUERY = "select o.id, u.username, e.name, o.date_order, o.complete_or_not " +
+        String ORDER_QUERY = "select o.id, u.username, e.name, o.date_order, o.complete_or_not, e.description " +
                 "from t_order as o, t_user as u, t_excursion as e " +
-                "where o.user_get_id = u.id and o.excursion_id = e.id and u.id = ? and o.complete_or_not = 'not complete'";
+                "where o.user_get_id = ? and o.excursion_id = e.id and u.id = o.user_order_id " +
+        "and o.complete_or_not = 'not complete';";
         List<Order> orders = new LinkedList<>();
 
         try {
@@ -141,7 +154,7 @@ public class OrderService {
     }
     public List<Order> getCompleteOrdersEmployee(){
 
-        String ORDER_QUERY = "select o.id, o.complete_or_not, u.username, e.name " +
+        String ORDER_QUERY = "select o.id, o.complete_or_not, u.username, e.name, e.description " +
                 "from t_order as o, t_user as u, t_excursion as e " +
                 "where o.user_get_id = ? and o.excursion_id = e.id and u.id = o.user_order_id and " +
                 "o.complete_or_not = 'complete'";
@@ -214,6 +227,7 @@ public class OrderService {
         public Order mapRow(ResultSet resultSet, int i) throws SQLException {
             Excursion excursion = new Excursion();
             excursion.setName(resultSet.getString("name"));
+            excursion.setDescription(resultSet.getString("description"));
 
             User userGet = new User();
             userGet.setUsername(resultSet.getString("username"));
@@ -233,6 +247,7 @@ public class OrderService {
             public Order mapRow(ResultSet resultSet, int i) throws SQLException {
                 Excursion excursion = new Excursion();
                 excursion.setName(resultSet.getString("name"));
+                excursion.setDescription(resultSet.getString("description"));
 
                 User userOrder = new User();
                 userOrder.setUsername(resultSet.getString("username"));

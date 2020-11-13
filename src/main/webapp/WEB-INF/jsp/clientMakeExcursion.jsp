@@ -35,7 +35,7 @@
     <form:checkbox path="objects" value="Numbers" id="objects5"/>
     <form:label path="objects" for="objects5" style='width: 500px'>Программа вызов различных гос. номеров(101,102...)</form:label><br>
     <form:errors path="objects"></form:errors>
-        ${objectsError}
+            <div><span style="color: red; ">${objectsError}</span></div>
         </div>
         <%--@elvariable id="viewExcursionForm" type=""--%>
             <form:form method="POST"  modelAttribute = "viewExcursionForm">
@@ -51,7 +51,7 @@
             </form:form>
     </form:form>
 </div>
-    <div><h4><a href="/clientWork">Назад</a></h4></div>
+        <button class="btn btn-outline-primary" onclick="location.href='/clientWork'">Назад</button>
     </div>
 </div>
 </body>

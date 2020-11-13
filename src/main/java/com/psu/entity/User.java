@@ -1,18 +1,16 @@
 package com.psu.entity;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.Size;
 import java.util.Collection;
-import java.util.Set;
 import javax.persistence.*;
 
 // for admin
 /*update t_user
-set roles_id = 2
+set role_id = 2
 where id = 1
 
 delete from t_client where id = 1
@@ -23,26 +21,20 @@ delete from t_client where id = 1
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@GenericGenerator(name="system-uuid", strategy = "uuid")
     private Long id;
-    //@Size(min=2, message = "Не меньше 2 знаков")
     private String username;
-   // @Size(min=2, message = "Не меньше 2 знаков")
     private String password;
 
     private String mail;
-   // @Size(min=3, message = "Не меньше 3 знаков")
     private String fullname;
 
     @Transient
     private String passwordConfirm;
 
-    //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Role role;
 
-    public User() {
-    }
+    public User() { }
 
     public User(@Size(min = 2, message = "Не меньше 2 знаков") String username, @Size(min = 2, message = "Не меньше 2 знаков") String password, String mail, @Size(min = 3, message = "Не меньше 3 знаков") String fullname, String passwordConfirm, Role role) {
         this.username = username;
@@ -106,8 +98,7 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-
-   public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return (Collection<? extends GrantedAuthority>) getRole();
     }
 

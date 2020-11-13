@@ -59,7 +59,12 @@ public class ClientController{
                 return "clientWork";
             }
             try {
-                clientService.deleteExcursion(Long.valueOf(serial_id));
+                if(!clientService.deleteExcursion(Long.valueOf(serial_id))){
+                    model.addAttribute("serialError", "Некорректный номер");
+                    model.addAttribute("allExcursions", clientService.allExcursion());
+                    model.addAttribute("allExcursionsName", clientService.getAllExcName());
+                    return "clientWork";
+                }
 
             }catch (NumberFormatException b){
                 model.addAttribute("serialError", "Некорректный номер");
@@ -99,7 +104,7 @@ public class ClientController{
                              Model model){
 
         if(action.equals("cancel")){
-            if(serial_id.equals(""))
+            if(serial_id.equals("") )
             {
                 model.addAttribute("serialError", "Некорректный номер");
                 model.addAttribute("myOrders", orderService.getNotMyOrder());
@@ -107,7 +112,11 @@ public class ClientController{
                 return "clientNotOrderList";
             }
             try {
-                clientService.cancelOrder(Long.valueOf(serial_id));
+                if(!clientService.cancelOrder(Long.valueOf(serial_id))){
+                    model.addAttribute("serialError", "Некорректный номер");
+                    model.addAttribute("myOrders", orderService.getNotMyOrder());
+                    return "clientNotOrderList";
+                }
             }catch (NumberFormatException n){
                 model.addAttribute("serialError", "Некорректный номер");
                 model.addAttribute("myOrders", orderService.getNotMyOrder());
@@ -137,6 +146,10 @@ public class ClientController{
         }
         if (objectsForm.getName().length() < 2){
             model.addAttribute("nameExcursionError", "Название должно содержать более 2-ух символов");
+            resultCheck = false;
+        }
+        if(!clientService.checkNameExcursion(objectsForm.getName())){
+            model.addAttribute("nameExcursionError", "Название экскурсии существует!");
             resultCheck = false;
         }
 

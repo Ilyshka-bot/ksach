@@ -5,13 +5,24 @@ import com.psu.entity.User;
 import com.psu.service.ClientService;
 import com.psu.service.EmployeeService;
 import com.psu.service.UserService;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.*;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+
+import static jdk.jfr.internal.SecuritySupport.getResourceAsStream;
 
 @Controller
 public class AdminController {
@@ -58,5 +69,17 @@ public class AdminController {
         model.addAttribute("allUsers", userService.usergtList(userId));
         return "admin";
     }
+    @RequestMapping(value = "report", method = RequestMethod.GET)
+    public void report(HttpServletResponse response) throws Exception {
+        response.setContentType("text/html");
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(userService.report());
+        InputStream inputStream = this.getClass().getResourceAsStream("/reports/report.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
+        response.addHeader("Content-disposition", "attachment; filename=user_list.pdf");
 
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint,servletOutputStream);
+
+    }
 }

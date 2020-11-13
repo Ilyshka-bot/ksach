@@ -3,12 +3,21 @@ package com.psu.controller;
 import com.psu.repository.EmployeeRepository;
 import com.psu.service.EmployeeService;
 import com.psu.service.OrderService;
+import com.psu.service.UserService;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.HtmlExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+
 
 @Controller
 public class EmployeeController {
@@ -19,6 +28,8 @@ public class EmployeeController {
     private EmployeeService employeeService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private UserService userService;
 
     private Long graphicIdEdit;
 
@@ -50,6 +61,7 @@ public class EmployeeController {
     @GetMapping("/orderNotComplete")
     public String notCompleteOrder(Model model){
         model.addAttribute("ordersNotComplete", orderService.getNotCompleteOrdersEmployee());
+        model.addAttribute("completeOrder", String.class);
 
         return "orderNotComplete";
     }
@@ -59,8 +71,12 @@ public class EmployeeController {
                                 @RequestParam(required = true, defaultValue = "" ) String action,
                                 Model model){
         if(action.equals("not_complete")) {
-            orderService.employeeCompleteOrder(orderId);
+            if(!orderService.employeeCompleteOrder(orderId)){
+
+                return "redirect:/orderNotComplete?error=1";
+            }
         }
+
         return "redirect:/orderNotComplete";
     }
     @GetMapping("/orderComplete")
@@ -101,11 +117,11 @@ public class EmployeeController {
         boolean resultCheck = true;
 
             if (!employeeService.checkDateStart(dateStart)) {
-                model.addAttribute("dateStartError", "Некорректная дата начала экскурсии");
+                model.addAttribute("dateStartError", "Некорректная дата");
                 resultCheck = false;
             }
-            if (!employeeService.checkTimeStart(timeStart)) {
-                model.addAttribute("timeStartError", "Некорректное время начала(Время работы с 10 до 20)");
+            if (!employeeService.checkTimeStart(timeStart,graphicIdEdit,dateStart)) {
+                model.addAttribute("timeStartError", "Некорректное время");
                 resultCheck = false;
             }
 
@@ -116,5 +132,7 @@ public class EmployeeController {
 
         return "redirect:/employeeGraphic";
     }
+
+
 
 }

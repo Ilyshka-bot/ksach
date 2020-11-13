@@ -8,7 +8,8 @@
 <head>
     <title>Место экскурсовода</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/verticalAndMargin.css">
     <style>
         .table td{
             text-align: center
@@ -16,17 +17,17 @@
     </style>
 </head>
 <body>
-<div>
-    <h2>График работы</h2>
-    <div class="table">
-        <table>
-            <thead>
+<h2 style="text-align: center">График работы</h2>
+    <div style="text-align: center;margin: 20px;">
+        <table class="table table-striped " id="table">
+            <thead class="thead-dark" >
             <th>Порядковый_номер</th>
             <th>Название_экскурсии</th>
             <th>Статус</th>
             <th>Дата_начала</th>
             <th>Время_начала</th>
             <th>Время_окончания</th>
+            <th><button type="submit" class="btn btn-outline-primary" id="b1" onclick="location.href='/employeeWork'">Назад</button></th>
             </thead>
             <c:forEach items="${employeeGraphic}" var="graphic">
                 <tr>
@@ -39,13 +40,11 @@
                         <form action="${pageContext.request.contextPath}/employeeGraphic" method="post">
                             <input type="hidden" name="graphicId" value="${graphic.id}"/>
                             <input type="hidden" name="action" value="edit"/>
-                            <td><button type="submit">Изменить</button></td>
+                            <td><button type="submit" class="btn btn-warning">Изменить</button></td>
                         </form>
                 </tr>
             </c:forEach>
         </table>
-    </div>
-    <h4><a href="/">Назад</a></h4>
 </div>
 </body>
 </html>

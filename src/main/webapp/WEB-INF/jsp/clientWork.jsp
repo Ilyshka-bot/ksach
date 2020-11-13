@@ -13,39 +13,34 @@
     <script>
         function clickOrder(f) {
             let n = f.name.selectedIndex;
-
             if(n)
-
                 alert(f.name.options[n].value + " успешно заказана.");
         }
-        function getNewDescrtp(){
 
-            var newString = 'sdfsdf, sdfsdfsd, s dfsdfsd, dssd'.replace(/\, /gi, "\n");
-            console.log(newString);
-        }
-        getNewDescrtp();
-
-        document.addEventListener("DOMContentLoaded",tableDown);//сработает после перенаправления на страницу error
+        document.addEventListener("DOMContentLoaded",tableDown);
+        document.addEventListener("DOMContentLoaded", buttonHeight);
 
         function tableDown() {
-            var table = document.getElementById('table'),
-                cells = table.getElementsByTagName('td');
-
-            for (var i=0,len=cells.length; i<len; i++){
-                cells[i].onclick = function(){
-                    console.log(this.innerHTML);
-                    /* if you know it going to be numeric:
-                    console.log(parseInt(this.innerHTML),10);
-                    */
-                }
+            let rowsLength = document.getElementById('table').rows.length;
+            console.log(rowsLength);
+            for(let i = 1; i < rowsLength; i++) {
+                let table = document.getElementById('table');
+                let res = table.rows [i].cells [2].innerHTML;
+                res = res.replace(/\, /gi, ',<br>');
+                res = res.replace(/$/, ';')
+                table.rows [i].cells [2].innerHTML = res;
             }
+        }
+        function buttonHeight() {
+            let height = document.getElementById('delete').clientHeight;
+            document.getElementById('deltxt').clientHeight = height;
         }
     </script>
 </head>
 <body>
 
 <h1 style="text-align: center">Заказ экскурсии</h1>
-<div class="container h-100">
+<div class="container h-100" >
     <div class="row h-100  justify-content-center" style="flex-direction: row">
 
         <div style="margin-top: 50px; text-align: right" >
@@ -61,23 +56,21 @@
                     </select>
                     <button type="submit" class="btn btn-success" style="margin: 5px; width: 100px" onclick="clickOrder(this.form)">Заказать</button>
                 </form>
-                <form action="${pageContext.request.contextPath}/clientWork" method="POST">
+                <form  style="vertical-align: top" action="${pageContext.request.contextPath}/clientWork" method="POST">
 
                     <input type="hidden" name="action" value="delete"/>
-
-                    <input type="text" style="width: 190px; height: 35px; margin-top: 5px" placeholder="Порядковый номер" name = "serial_id" class="form-group">
-
-                    <button type="submit" class="btn btn-danger" style="margin: 5px;width: 100px">Удалить</button>
-                    <form:errors path="serial_id"></form:errors>
-                    <div style="text-align: left"><span style="color: red; ">${serialError}</span></div>
+                    <input type="text" id="deltxt" style="width: 190px; height: 38px;" placeholder="Порядковый номер" name = "serial_id" class="form-group">
+                    <button type="submit" class="btn btn-danger" style="margin: 5px;width: 100px;vertical-align: unset" id="delete">Удалить</button>
+                        <form:errors path="serial_id"></form:errors>
+                    <span style="color: red;"><br>${serialError}</span>
                 </form>
             <button class="btn btn-outline-primary" style="width: 300px; margin-right: 5px" onclick="location.href='/'">Назад</button>
         </div>
 
         <div class="col">
-            <h2 style="text-align: center">Список экскурсий</h2>
             <table class="table" id="table">
-        <thead class="thead-dark">
+                <caption style="text-align: center; caption-side: top; color: black"><h2>Список экскурсий</h2></caption>
+                <thead class="thead-dark">
         <th style="text-align: center">Порядковый <br>номер</th>
         <th>Название</th>
         <th>Описание</th>
@@ -91,8 +84,8 @@
                 <td width="15%">${excursion.name}</td>
                 <td id="descriptionExc" width="30%">${excursion.description}</td>
                 <td width="10%">${excursion.price}</td>
-                <td>${excursion.viewExcursion.typeName}</td>
-                <td width="10%">${excursion.time}</td>
+                <td width="12%">${excursion.viewExcursion.typeName}</td>
+                <td width="12%">${excursion.time}</td>
             </tr>
         </c:forEach>
     </table>

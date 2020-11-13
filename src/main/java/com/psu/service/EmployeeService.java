@@ -7,10 +7,15 @@ import com.psu.repository.GraphicRepository;
 import com.psu.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.CallableStatementCallback;
+import org.springframework.jdbc.core.CallableStatementCreator;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -56,44 +61,23 @@ public class EmployeeService {
         String GRAPHIC_QUERY = "INSERT INTO public.t_graphic_employee(" +
                 "date_start, time_end, time_start, employee_id, order_id) values ('','','', ?, ?);";
 
-        t.update(GRAPHIC_QUERY, employee.getUser().getId(),order_id);
+        t.update(GRAPHIC_QUERY, employee.getId(),order_id);
     }
     public void sendTimeToGraphic(String dateStart, String timeStart, Long graphicId){
         GraphicEmployee graphicEmployee = graphicRepository.findGraphicEmployeeById(graphicId);
         String excursionName = graphicEmployee.getOrder().getExcursion().getName();
+        String timeEnd = getTimeEnd(timeStart,excursionName, graphicEmployee.getOrder().getExcursion());
 
-        if(!dateStart.equals("")){
-            String GRAPHIC_QUERY = "UPDATE \"t_graphic_employee\" " +
-                    "SET date_start = ? " +
-                    "WHERE id = ?;";
-
-            t.update(GRAPHIC_QUERY,dateStart, graphicId);
-
-            if(!timeStart.equals("")){
-                GRAPHIC_QUERY = "UPDATE \"t_graphic_employee\" " +
-                        "SET time_start = ? " +
-                        "WHERE id = ?;";
-
-                t.update(GRAPHIC_QUERY,timeStart,graphicId);
-
-                String timeEnd = getTimeEnd(timeStart, excursionName);
-                GRAPHIC_QUERY = "UPDATE \"t_graphic_employee\" " +
-                        "SET time_end = ? " +
-                        "WHERE id = ?;";
-
-                t.update(GRAPHIC_QUERY,timeEnd,graphicId);
-
-            }
-        }
+        t.update("call updatetimegraphicemployee(?, ?, ?, ?)", graphicId,dateStart,timeStart, timeEnd);
 
     }
 
-    public String getTimeEnd(String timeStart, String excursionName){
+
+    public String getTimeEnd(String timeStart, String excursionName, Excursion excursion){
         String timeEnd = "";
         String massTimeDur[] = timeStart.split(":");
         int hour = Integer.parseInt(massTimeDur[0]);
         int minute = Integer.parseInt(massTimeDur[1]);
-        System.out.println(hour + " =-=-=-==" + minute);
 
         if(excursionName.equals(ExcursionsName.экскурсия1.name())){
             hour += 1;
@@ -106,6 +90,16 @@ public class EmployeeService {
             }
         }else if(excursionName.equals(ExcursionsName.экскурсия3.name())){
             hour += 2;
+        }else{
+            String time = excursion.getTime();
+            int hourRes = Integer.parseInt(time.split(":")[0]);
+            int minuteRes = Integer.parseInt(time.split(":")[1]);
+            hour += hourRes;
+            minute += minuteRes;
+            if(minute > 59){
+                hour += 1;
+                minute -= 60;
+            }
         }
         String minutes = String.valueOf(minute);
         if(minute >= 0 && minute < 10){
@@ -117,10 +111,31 @@ public class EmployeeService {
         return timeEnd;
     }
 
-    public boolean checkTimeStart(String timeStart){
+    public boolean checkTimeStart(String timeStart, Long graphic_id, String dateStart){
         if(timeStart.equals("")) return false;
+        int timeHourStart = Integer.parseInt(timeStart.split(":")[0]);
+        GraphicEmployee currentEditGraphic = graphicRepository.findGraphicEmployeeById(graphic_id);
+
+        List<GraphicEmployee> graphic = getGraphic();
+        String timeEndEditGraphic = getTimeEnd(timeStart, currentEditGraphic.getOrder().getExcursion().getName(),currentEditGraphic.getOrder().getExcursion());
+        int hourEndEditGraphic = Integer.parseInt(timeEndEditGraphic.split(":")[0]);
+
+        for(GraphicEmployee graphicEmployee : graphic){
+
+            if(graphicEmployee.getTimeEnd().equals("") || graphicEmployee.getId().equals(graphic_id)) continue;
+
+            int hourEnd = Integer.parseInt(graphicEmployee.getTimeEnd().split(":")[0]);
+            int hourStart = Integer.parseInt(graphicEmployee.getTimeStart().split(":")[0]);
+            String grEmpDate = graphicEmployee.getDateStart();
+
+            if(timeHourStart <= hourEnd && timeHourStart >= (hourStart - (hourEndEditGraphic - timeHourStart)) && grEmpDate.equals(dateStart)){
+                return false;
+            }
+
+        }
+
         String massTimeStart[] = timeStart.split(":");
-        if(Integer.parseInt(massTimeStart[0]) < 9 || Integer.parseInt(massTimeStart[0]) > 20)
+        if(Integer.parseInt(massTimeStart[0]) < 9 || Integer.parseInt(massTimeStart[0]) > 20)//время работы с 10 до 20
             return false;
         return true;
     }
@@ -163,12 +178,11 @@ public class EmployeeService {
                 "order by g.id;";
 
         try {
-            graphics = t.query(GRAPHIC_QUERY,new graphicMapper(),userService.getUser().getId());
+            Employee employee = employeeRepository.findByUser(userService.getUser());
+            graphics = t.query(GRAPHIC_QUERY,new graphicMapper(),employee.getId());
         } catch (DataAccessException e) {
-            System.out.println("All employee's are busy, wait!");
         } catch (NumberFormatException e) {
         }
-
         return graphics;
     }
 

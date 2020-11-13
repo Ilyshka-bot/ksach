@@ -42,7 +42,7 @@ public class RegistrationController {
         return "login";
     }
     @GetMapping("/regEmp")
-    public String admin(Model model){
+    public String regEmp(Model model){
         model.addAttribute("userForm", new User());
         model.addAttribute("employeeForm", new Employee());
         model.addAttribute("postForm", new Post());
@@ -79,6 +79,7 @@ public class RegistrationController {
             model.addAttribute("fullnameError", "Некорректное ФИО");
             resultCheck = false;
         }
+
         if (!userService.checkUsername(userForm.getUsername())) {
             model.addAttribute("usernameError", "Некорректное имя пользователя");
             resultCheck = false;
