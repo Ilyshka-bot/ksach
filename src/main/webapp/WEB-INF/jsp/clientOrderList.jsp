@@ -1,6 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 
 <!DOCTYPE HTML>
 <html>
@@ -9,7 +9,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/verticalAndMargin.css">
-
     <script>
         document.addEventListener("DOMContentLoaded",showData);
         function showData() {
@@ -42,7 +41,6 @@
 
         });
     </script>
-
 </head>
 <body>
 <div>
@@ -50,23 +48,23 @@
             <div class="row h-100  justify-content-center align-items-center col" style="flex-direction: column">
                 <h2>Список заказов</h2>
                 <table class="table table_sort" id="table">
-            <thead class="thead-light" >
-            <th>Порядковый номер</th>
-            <th>Дата заявки</th>
-            <th>Название экскурсии</th>
-            <th>ФИО экскурсовода</th>
-            <th>Статус</th>
-            </thead>
-            <c:forEach items="${myOrders}" var="order">
-                <tr style="text-align: center">
-                    <td width="20%">${order.id}</td>
-                    <td>${order.dateOrder}</td>
-                    <td>${order.excursion.name}</td>
-                    <td>${order.userGet.fullname}</td>
-                    <td>${order.completeOrNot}</td>
-                </tr>
-            </c:forEach>
-        </table>
+                    <thead class="thead-light" >
+                    <th>Порядковый номер</th>
+                    <th>Дата заявки</th>
+                    <th>Название экскурсии</th>
+                    <th>ФИО экскурсовода</th>
+                    <th>Статус</th>
+                    </thead>
+                    <c:forEach items="${myOrders}" var="order">
+                        <tr style="text-align: center">
+                            <td width="20%">${order.id}</td>
+                            <td>${order.dateOrder}</td>
+                            <td>${order.excursion.name}</td>
+                            <td>${order.userGet.fullname}</td>
+                            <td>${order.completeOrNot}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
                 <button class="btn btn-outline-primary" onclick="location.href='/clientWork'">Назад</button>
             </div>
         </div>

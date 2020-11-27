@@ -1,10 +1,10 @@
 package com.psu.object;
 
-import javax.persistence.OneToMany;
 import java.util.List;
 
 public class ListObjectExcursion {
-    String name;
+
+    private String name;
     private List<String> objects;
 
     public ListObjectExcursion(){ }

@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -32,11 +32,8 @@
         </c:forEach>
     </table>
     <button type="submit" class="btn btn-outline-primary" id="b1" onclick="location.href='/employeeWork'">Назад</button>
-
 </div>
 <div id="editor"></div>
-
 <button id="cmd" class="btn btn-outline-primary">Generate PDF</button>
 </body>
-
 </html>

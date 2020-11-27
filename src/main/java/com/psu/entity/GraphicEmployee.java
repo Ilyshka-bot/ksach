@@ -11,17 +11,13 @@ public class GraphicEmployee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
-
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne(fetch = FetchType.LAZY)
     private Employee employee;
-
     private String dateStart;
-
     private String timeStart;
     private String timeEnd;
 

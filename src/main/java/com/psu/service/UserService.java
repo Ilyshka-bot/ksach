@@ -7,7 +7,6 @@ import com.psu.repository.RoleRepository;
 import com.psu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -54,17 +53,16 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> allUsers() {
-        return (List<User>) userRepository.findAll();
+        return userRepository.findAll();
     }
 
     public void saveUser(User user) {
         Role role = roleRepository.findRoleById(1L);
         user.setRole(role);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-
         userRepository.save(user);
-
     }
+
     public boolean checkUsername(String username){
         return username.matches("[a-zA-Z0-9_]{2,}+");
     }
@@ -73,6 +71,7 @@ public class UserService implements UserDetailsService {
         String regex = "[А-Я][а-я]{2,}\\s[А-Я][а-я]{2,}\\s[А-Я][а-я]{2,}";
         return  fio.matches(regex);
     }
+
     public boolean checkPassportData(String passport){
         return passport.matches("[а-яА-яa-zA-Z0-9. ]{2,}+");
     }
@@ -101,7 +100,6 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean deleteUser(Long userId) {
-
         if (userRepository.findById(userId).isPresent()) {
             User user = userRepository.findUserById(userId);
             user.setRole(null);
@@ -126,9 +124,8 @@ public class UserService implements UserDetailsService {
         }
         return result;
     }
-    public boolean isCorrectDate(String startDate, String endDate, String status){//(2020-12-28)
-        System.out.println(startDate + "--=-=-==-= " + endDate);
 
+    public boolean isCorrectDate(String startDate, String endDate, String status){
         boolean result = true;
         String[] start = startDate.split("-");
         String[] end = endDate.split("-");
@@ -154,7 +151,6 @@ public class UserService implements UserDetailsService {
         return result;
     }
 
-
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -164,9 +160,7 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-
         grantedAuthoritySet.add(new SimpleGrantedAuthority(user.getRole().getName()));
-
         return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),grantedAuthoritySet);
     }
 
@@ -179,10 +173,8 @@ public class UserService implements UserDetailsService {
         String username = getCurrentUsername();
         CriteriaQuery<User> criteriaQuery = em.getCriteriaBuilder().createQuery(User.class);
         Root<User> userRequest = criteriaQuery.from(User.class);
-
         Expression<String> exp = userRequest.get("username");
         Predicate predicate = exp.in(username);
-
         criteriaQuery.where(predicate);
         try {
             return em.createQuery(criteriaQuery).getSingleResult();
@@ -204,5 +196,4 @@ public class UserService implements UserDetailsService {
         }
         return result;
     }
-
 }

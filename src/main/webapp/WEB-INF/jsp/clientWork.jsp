@@ -1,9 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 
 <!DOCTYPE HTML>
-
 <html>
 <head>
     <title>Место пользователя</title>
@@ -31,6 +30,7 @@
                 table.rows [i].cells [2].innerHTML = res;
             }
         }
+
         function buttonHeight() {
             let height = document.getElementById('delete').clientHeight;
             document.getElementById('deltxt').clientHeight = height;
@@ -71,26 +71,25 @@
             <table class="table" id="table">
                 <caption style="text-align: center; caption-side: top; color: black"><h2>Список экскурсий</h2></caption>
                 <thead class="thead-dark">
-        <th style="text-align: center">Порядковый <br>номер</th>
-        <th>Название</th>
-        <th>Описание</th>
-        <th>Цена</th>
-        <th>Вид</th>
-        <th style="text-align: center" >Итого<br>время</th>
-        </thead>
-        <c:forEach items="${allExcursions}" var="excursion">
-            <tr>
-                <td style="text-align: center" width="20%">${excursion.id}</td>
-                <td width="15%">${excursion.name}</td>
-                <td id="descriptionExc" width="30%">${excursion.description}</td>
-                <td width="10%">${excursion.price}</td>
-                <td width="12%">${excursion.viewExcursion.typeName}</td>
-                <td width="12%">${excursion.time}</td>
-            </tr>
-        </c:forEach>
-    </table>
+                <th style="text-align: center">Порядковый <br>номер</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Цена</th>
+                <th>Вид</th>
+                <th style="text-align: center" >Итого<br>время</th>
+                </thead>
+                <c:forEach items="${allExcursions}" var="excursion">
+                    <tr>
+                        <td style="text-align: center" width="20%">${excursion.id}</td>
+                        <td width="15%">${excursion.name}</td>
+                        <td id="descriptionExc" width="30%">${excursion.description}</td>
+                        <td width="10%">${excursion.price}</td>
+                        <td width="12%">${excursion.viewExcursion.typeName}</td>
+                        <td width="12%">${excursion.time}</td>
+                    </tr>
+                </c:forEach>
+            </table>
         </div>
-
     </div>
  </div>
 </body>

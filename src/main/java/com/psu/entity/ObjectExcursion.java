@@ -1,10 +1,6 @@
 package com.psu.entity;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
 
 /*
 insert into t_object (id, name, type,price,time_duration) values (1, 'VR', 'hard',20, 30),
@@ -15,9 +11,9 @@ insert into t_object (id, name, type,price,time_duration) values (1, 'VR', 'hard
 @Entity
 @Table(name = "t_object")
 public class ObjectExcursion {
+
     @Id
     private Long id;
-
     private String name;
     private String type;
     private Long price;

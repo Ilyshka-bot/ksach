@@ -1,6 +1,5 @@
 package com.psu.entity;
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,18 +18,16 @@ delete from t_client where id = 1
 @Entity
 @Table(name = "t_user")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
-
     private String mail;
     private String fullname;
-
     @Transient
     private String passwordConfirm;
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Role role;
 

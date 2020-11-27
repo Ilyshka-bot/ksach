@@ -1,7 +1,5 @@
 package com.psu.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
@@ -17,11 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityServicesImpl extends WebSecurityConfigurerAdapter implements SecurityServices {
 
-    private static final Logger logger = LoggerFactory.getLogger(SecurityServicesImpl.class);
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -32,11 +27,13 @@ public class SecurityServicesImpl extends WebSecurityConfigurerAdapter implement
             return ((UserDetails) userDetails).getUsername();
         return null;
     }
+
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
     @Override
     public void autoLogin(String username, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -46,8 +43,6 @@ public class SecurityServicesImpl extends WebSecurityConfigurerAdapter implement
 
         if(usernamePasswordAuthenticationToken.isAuthenticated()){
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-            logger.debug(String.format("Succesfully %s auto logged in", username));
         }
     }
 }

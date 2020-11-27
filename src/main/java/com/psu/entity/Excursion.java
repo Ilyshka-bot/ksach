@@ -1,10 +1,8 @@
 package com.psu.entity;
 
-
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 /*
@@ -17,23 +15,20 @@ INSERT INTO public.t_excursion(
 @Entity
 @Table(name = "t_excursion")
 public class Excursion {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Transient
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToMany(fetch = FetchType.LAZY)
     private Set<ObjectExcursion> objectExcursion;
-
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne(fetch = FetchType.LAZY)
     private ViewExcursion viewExcursion;
-
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
-
     private String name;
     private String description;
     private Long price;

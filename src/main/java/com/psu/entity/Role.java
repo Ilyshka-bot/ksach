@@ -3,8 +3,6 @@ package com.psu.entity;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Set;
-
 
 /*INSERT INTO public.t_role(id, name)
   VALUES (1, 'ROLE_USER'), (2, 'ROLE_ADMIN'), (3, 'ROLE_EMPLOYEE');
@@ -12,6 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "t_role")
 public class Role implements GrantedAuthority {
+
     @Id
     private Long id;
     private String name;

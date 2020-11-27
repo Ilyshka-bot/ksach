@@ -1,6 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -42,7 +42,6 @@
             <div>  <form:input type="text" path="experience" placeholder="Опыт работы" cssClass="input"></form:input></div>
             <div class="smallDiv" style="color: red"> <form:errors path="experience"></form:errors>
                     ${experienceError}</div>
-
             <div>
                 <p>Дата начала:<br> <form:input type="date" name="calendar" path="date_start" id = "current"></form:input>
                 <script>

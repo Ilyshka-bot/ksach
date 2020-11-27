@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Collections;
 
 @Controller
 public class RegistrationController {
@@ -26,21 +24,19 @@ public class RegistrationController {
     private EmployeeService employeeService;
     @Autowired
     private PostService postService;
-
     @Autowired
     private SecurityServices securityServices;
 
     @GetMapping("/")
     public String index(){
-
         return "index";
     }
 
     @GetMapping("/login")
     public String login(){
-
         return "login";
     }
+
     @GetMapping("/regEmp")
     public String regEmp(Model model){
         model.addAttribute("userForm", new User());
@@ -55,8 +51,8 @@ public class RegistrationController {
                          @ModelAttribute("employeeForm") @Valid Employee employeeForm,
                          @ModelAttribute("postForm") @Valid Post postForm,
                          BindingResult bindingResult, Model model) {
-
         boolean resultCheck = true;
+
         if (bindingResult.hasErrors()) {
             return "registration";
         }
@@ -66,7 +62,6 @@ public class RegistrationController {
             if (userForm.getPasswordConfirm().equals("")) model.addAttribute("passwordError", emptyRes);
             resultCheck = false;
         }
-
         if (userService.isValidEmailAddress(userForm.getMail()) == false) {
             model.addAttribute("mailError", "Не валидная почта");
             resultCheck = false;
@@ -105,7 +100,6 @@ public class RegistrationController {
             resultCheck = false;
         }
 
-
         if(!resultCheck) return "regEmp";
 
         if(postForm.getName().equals("Экскурсовод")) {
@@ -114,9 +108,7 @@ public class RegistrationController {
         else if(postForm.getName().equals("Работник")){
             employeeForm.setPost(postService.getPost("POST_WORKER"));
         }
-
         employeeService.saveEmployee(employeeForm, userForm);
-
         return "redirect:/";
     }
 
@@ -124,7 +116,6 @@ public class RegistrationController {
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
         model.addAttribute("clientForm", new Client());
-
         return "registration";
     }
 
@@ -133,6 +124,7 @@ public class RegistrationController {
                           @ModelAttribute("clientForm") @Valid Client clientForm,
                           BindingResult bindingResult, Model model) {
         boolean resultCheck = true;
+
         if (bindingResult.hasErrors()) {
             return "registration";
         }
@@ -142,7 +134,6 @@ public class RegistrationController {
             if(userForm.getPasswordConfirm().equals("")) model.addAttribute("passwordError",emptyRes);
             resultCheck = false;
         }
-
         if(userService.isValidEmailAddress(userForm.getMail()) == false){
             model.addAttribute("mailError","Не валидная почта");
             resultCheck = false;
@@ -171,13 +162,9 @@ public class RegistrationController {
         if(!resultCheck) return "registration";
 
         userService.saveUser(userForm);
-
         clientForm.setUser(userForm);
         clientService.saveClient(clientForm);
-
         securityServices.autoLogin(userForm.getUsername(),userForm.getPasswordConfirm());
-
         return "redirect:/";
     }
-
 }

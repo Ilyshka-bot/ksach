@@ -1,13 +1,7 @@
 package com.psu.entity;
 
-import com.psu.repository.PostRepository;
-import com.psu.service.PostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Repository;
-
 import javax.persistence.*;
-import java.util.ArrayList;
 
 /*INSERT INTO public.t_post(id, name)
   VALUES (1, 'POST_GUIDE'), (2, 'POST_WORKER');
@@ -52,5 +46,4 @@ public class Post implements GrantedAuthority {
     public String getAuthority() {
         return getName();
     }
-
 }

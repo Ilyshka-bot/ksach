@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="from" uri="http://www.springframework.org/tags/form" %>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 
 <!DOCTYPE HTML>
 <html>
@@ -18,7 +18,6 @@
             font-family: helvetica;
             width: 160px;
         }
-
     </style>
 </head>
 <body>
@@ -41,8 +40,6 @@
             <button type="submit" class="btn btn-success" style="margin: 5px">Установить</button>
             <button type="button" class="btn btn-outline-primary" id="b1" onclick="location.href='/employeeGraphic'">Назад</button>
         </div>
-
-
     </form>
     </div>
 </div>

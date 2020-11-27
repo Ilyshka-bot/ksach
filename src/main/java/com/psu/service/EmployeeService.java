@@ -7,15 +7,10 @@ import com.psu.repository.GraphicRepository;
 import com.psu.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.CallableStatementCallback;
-import org.springframework.jdbc.core.CallableStatementCreator;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -24,6 +19,7 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
+
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
@@ -40,7 +36,6 @@ public class EmployeeService {
     public void saveEmployee(Employee employee, User user){
         userService.saveEmployee(user);
         employee.setUser(user);
-
         employeeRepository.save(employee);
     }
 
@@ -49,7 +44,6 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Employee employee){
-
         employee.getUser().setRole(null);
         employeeRepository.delete(employee);
     }
@@ -57,19 +51,17 @@ public class EmployeeService {
     public void sendOrderToGraphic(Long order_id){
         User meEmployee = userService.getUser();
         Employee employee = employeeRepository.findByUser(meEmployee);
-
         String GRAPHIC_QUERY = "INSERT INTO public.t_graphic_employee(" +
                 "date_start, time_end, time_start, employee_id, order_id) values ('','','', ?, ?);";
 
         t.update(GRAPHIC_QUERY, employee.getId(),order_id);
     }
+
     public void sendTimeToGraphic(String dateStart, String timeStart, Long graphicId){
         GraphicEmployee graphicEmployee = graphicRepository.findGraphicEmployeeById(graphicId);
         String excursionName = graphicEmployee.getOrder().getExcursion().getName();
         String timeEnd = getTimeEnd(timeStart,excursionName, graphicEmployee.getOrder().getExcursion());
-
         t.update("call updatetimegraphicemployee(?, ?, ?, ?)", graphicId,dateStart,timeStart, timeEnd);
-
     }
 
 
@@ -107,7 +99,6 @@ public class EmployeeService {
         }
 
         timeEnd = hour + ":" + minutes;
-
         return timeEnd;
     }
 
@@ -121,19 +112,14 @@ public class EmployeeService {
         int hourEndEditGraphic = Integer.parseInt(timeEndEditGraphic.split(":")[0]);
 
         for(GraphicEmployee graphicEmployee : graphic){
-
             if(graphicEmployee.getTimeEnd().equals("") || graphicEmployee.getId().equals(graphic_id)) continue;
-
             int hourEnd = Integer.parseInt(graphicEmployee.getTimeEnd().split(":")[0]);
             int hourStart = Integer.parseInt(graphicEmployee.getTimeStart().split(":")[0]);
             String grEmpDate = graphicEmployee.getDateStart();
-
             if(timeHourStart <= hourEnd && timeHourStart >= (hourStart - (hourEndEditGraphic - timeHourStart)) && grEmpDate.equals(dateStart)){
                 return false;
             }
-
         }
-
         String massTimeStart[] = timeStart.split(":");
         if(Integer.parseInt(massTimeStart[0]) < 9 || Integer.parseInt(massTimeStart[0]) > 20)//время работы с 10 до 20
             return false;
@@ -143,7 +129,6 @@ public class EmployeeService {
     public boolean checkDateStart(String dateStart){
         if(dateStart.equals("")) return false;
         int currentMonth = getCurrentMonth() + 1;
-
         String currentDate = getCurrentYear() + "-" + currentMonth + "-" + getCurrentDay();
         if(!userService.isCorrectDate(currentDate, dateStart,"graph")){
             return false;
@@ -157,18 +142,19 @@ public class EmployeeService {
         calendar.setTime(new java.util.Date());
         return calendar.get(java.util.Calendar.YEAR);
     }
+
     public static int getCurrentMonth()
     {
         java.util.Calendar calendar = java.util.Calendar.getInstance(java.util.TimeZone.getDefault(), java.util.Locale.getDefault());
         calendar.setTime(new java.util.Date());
         return calendar.get(Calendar.MONTH);
     }
+
     public static int getCurrentDay() {
         java.util.Calendar calendar = java.util.Calendar.getInstance(java.util.TimeZone.getDefault(), java.util.Locale.getDefault());
         calendar.setTime(new java.util.Date());
         return calendar.get(Calendar.DAY_OF_MONTH);
     }
-
 
     public List<GraphicEmployee> getGraphic(){
         List<GraphicEmployee> graphics = new LinkedList<>();
@@ -176,7 +162,6 @@ public class EmployeeService {
         "FROM t_graphic_employee as g,t_excursion as e, t_order as o " +
         "where g.employee_id = ? and g.order_id = o.id and o.excursion_id = e.id " +
                 "order by g.id;";
-
         try {
             Employee employee = employeeRepository.findByUser(userService.getUser());
             graphics = t.query(GRAPHIC_QUERY,new graphicMapper(),employee.getId());
@@ -202,7 +187,6 @@ public class EmployeeService {
             graphicEmployee.setTimeStart(resultSet.getString("time_start"));
             graphicEmployee.setTimeEnd(resultSet.getString("time_end"));
             graphicEmployee.setOrder(order);
-
             return graphicEmployee;
         }
     }

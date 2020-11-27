@@ -21,8 +21,6 @@ import java.util.List;
 @Service
 public class OrderService {
 
-
-
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -51,16 +49,12 @@ public class OrderService {
             }
         }
         order.setUserOrder(userService.getUser());
-
         order.setCompleteOrNot("not complete");
-
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd");
         order.setDateOrder(formatForDateNow.format(dateNow));
-
         orderRepository.save(order);
     }
-
 
     public List<Order> getMyOrders(){
         List<Order> orders = new LinkedList<>();
@@ -107,7 +101,6 @@ public class OrderService {
             System.out.println("All employee's are busy, wait!");
         } catch (NumberFormatException e) {
         }
-
         return orders;
     }
 
@@ -115,61 +108,52 @@ public class OrderService {
         String ORDER_QUERY = "UPDATE public.t_order" +
                 " SET user_get_id = ?" +
                 " WHERE id = ?;";
-
         t.update(ORDER_QUERY,userService.getUser().getId(),order_id);
     }
-    public boolean employeeCompleteOrder(Long order_id){
 
+    public boolean employeeCompleteOrder(Long order_id){
         Order order = orderRepository.findOrderById(order_id);
         GraphicEmployee graphicEmployee = graphicRepository.findGraphicEmployeeByOrder(order);
 
         if(graphicEmployee.getDateStart().equals("") && graphicEmployee.getTimeStart().equals("")){
             return false;
         }
-
         String ORDER_QUERY = "UPDATE public.t_order" +
                 " SET complete_or_not = 'complete'" +
                 " WHERE id = ?;";
-
         t.update(ORDER_QUERY,order_id);
         return true;
     }
 
     public List<Order> getNotCompleteOrdersEmployee(){
-
         String ORDER_QUERY = "select o.id, u.username, e.name, o.date_order, o.complete_or_not, e.description " +
                 "from t_order as o, t_user as u, t_excursion as e " +
                 "where o.user_get_id = ? and o.excursion_id = e.id and u.id = o.user_order_id " +
         "and o.complete_or_not = 'not complete';";
         List<Order> orders = new LinkedList<>();
-
         try {
             orders = t.query(ORDER_QUERY,new OrderMapperNotCompleteEmployee(),userService.getUser().getId());
         } catch (DataAccessException e) {
             System.out.println("All employee's are busy, wait!");
         } catch (NumberFormatException e) {
         }
-
         return orders;
     }
-    public List<Order> getCompleteOrdersEmployee(){
 
+    public List<Order> getCompleteOrdersEmployee(){
         String ORDER_QUERY = "select o.id, o.complete_or_not, u.username, e.name, e.description " +
                 "from t_order as o, t_user as u, t_excursion as e " +
                 "where o.user_get_id = ? and o.excursion_id = e.id and u.id = o.user_order_id and " +
                 "o.complete_or_not = 'complete'";
         List<Order> orders = new LinkedList<>();
-
         try {
             orders = t.query(ORDER_QUERY,new OrderMapperCompleteEmployee(),userService.getUser().getId());
         } catch (DataAccessException e) {
             System.out.println("All employee's are busy, wait!");
         } catch (NumberFormatException e) {
         }
-
         return orders;
     }
-
 
     public class OrderMapper implements RowMapper<Order> {
         @Override
@@ -186,10 +170,10 @@ public class OrderService {
             order.setCompleteOrNot(resultSet.getString("complete_or_not"));
             order.setUserGet(userGet);
             order.setExcursion(excursion);
-
             return order;
         }
     }
+
     public class NotOrderMapper implements RowMapper<Order> {
         @Override
         public Order mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -200,7 +184,6 @@ public class OrderService {
             order.setId(resultSet.getLong("id"));
             order.setDateOrder(resultSet.getString("date_order"));
             order.setExcursion(excursion);
-
             return order;
         }
     }
@@ -218,7 +201,6 @@ public class OrderService {
             order.setId(resultSet.getLong("id"));
             order.setUserGet(userGet);
             order.setExcursion(excursion);
-
             return order;
         }
     }
@@ -238,27 +220,26 @@ public class OrderService {
             order.setCompleteOrNot(resultSet.getString("complete_or_not"));
             order.setUserGet(userGet);
             order.setExcursion(excursion);
-
             return order;
         }
     }
-        public class OrderMapperCompleteEmployee implements RowMapper<Order> {
-            @Override
-            public Order mapRow(ResultSet resultSet, int i) throws SQLException {
-                Excursion excursion = new Excursion();
-                excursion.setName(resultSet.getString("name"));
-                excursion.setDescription(resultSet.getString("description"));
 
-                User userOrder = new User();
-                userOrder.setUsername(resultSet.getString("username"));
+    public class OrderMapperCompleteEmployee implements RowMapper<Order> {
+        @Override
+        public Order mapRow(ResultSet resultSet, int i) throws SQLException {
+            Excursion excursion = new Excursion();
+            excursion.setName(resultSet.getString("name"));
+            excursion.setDescription(resultSet.getString("description"));
 
-                Order order = new Order();
-                order.setId(resultSet.getLong("id"));
-                order.setCompleteOrNot(resultSet.getString("complete_or_not"));
-                order.setUserOrder(userOrder);
-                order.setExcursion(excursion);
+            User userOrder = new User();
+            userOrder.setUsername(resultSet.getString("username"));
 
-                return order;
-            }
+            Order order = new Order();
+            order.setId(resultSet.getLong("id"));
+            order.setCompleteOrNot(resultSet.getString("complete_or_not"));
+            order.setUserOrder(userOrder);
+            order.setExcursion(excursion);
+            return order;
         }
+    }
 }

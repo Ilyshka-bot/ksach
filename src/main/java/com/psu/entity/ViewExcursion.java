@@ -11,9 +11,9 @@ INSERT INTO public.t_view_exc VALUES (1,'обычные'),(2, 'учебные'),
 @Entity
 @Table(name = "t_view_Exc")
 public class ViewExcursion {
+
     @Id
     private Long id;
-
     private String typeName;
 
     public ViewExcursion(){ }

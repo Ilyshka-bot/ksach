@@ -7,24 +7,20 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_order")
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String dateOrder;
-
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne(fetch = FetchType.LAZY)
     private Excursion excursion;
-
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne(fetch = FetchType.LAZY)
     private User userOrder;
-
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne(fetch = FetchType.LAZY)
     private User userGet;
-
     private String completeOrNot;
 
     public Order(){ }

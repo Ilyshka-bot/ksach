@@ -13,6 +13,7 @@ import java.util.*;
 
 @Service
 public class ClientService {
+
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
@@ -52,7 +53,6 @@ public class ClientService {
     }
 
     public void insertExcursion(ListObjectExcursion listObjectExcursion, ViewExcursion viewExcursion){
-
         Excursion excursion = new Excursion();
         excursion.setName(listObjectExcursion.getName());
         Set<ObjectExcursion> objectExcursions = new HashSet<>();
@@ -61,9 +61,7 @@ public class ClientService {
             ObjectExcursion objectExcursion = objectExcurtionRepository.findObjectExcursionByName(o);
             objectExcursions.add(objectExcursion);
         }
-
         excursion.setObjectExcursion(objectExcursions);
-
         int resTimeDuration = 0;
         excursion.setPrice(0L);
         excursion.setDescription("");
@@ -80,7 +78,6 @@ public class ClientService {
         viewExcursion = viewExcursionRepository.findViewExcursionByTypeName(viewExcursion.getTypeName());
 
         for(ObjectExcursion object : excursion.getObjectExcursion()){
-
             if(object.getName().equals(ObjectsName.VR.name())){
                 resTimeDuration += getTimeAndSetExcursionObject(excursion,"Программа VR", 1L,object);
 
@@ -125,24 +122,20 @@ public class ClientService {
         String resultDescription = excursion.getDescription();//убираем запятую в конце описания
         resultDescription = resultDescription.substring(0,resultDescription.length() - 1);
         excursion.setDescription(resultDescription);
-
         Client client = getClient(userService.getUser());
         t.update("call insertExcursion(?, ?, ?, ?,?,?)", excursion.getName(), excursion.getDescription(), excursion.getPrice(),
                 excursion.getTime(),
                 client.getId() ,
                 excursion.getViewExcursion().getId());
-
     }
 
     public boolean checkNameExcursion(String nameExc){
-
         List<Excursion> excursions = excursionRepository.findAll();
         for(Excursion excursion : excursions){
             if(excursion.getName().equals(nameExc)){
                 return false;
             }
         }
-
         return true;
     }
 
@@ -152,7 +145,6 @@ public class ClientService {
         excursion.setDescription(getDescript + " " + name + ",");
         excursion.setPrice(getPrice + objectExcursion.getPrice());
         return Integer.parseInt(objectExcursion.getTimeDuration());
-
     }
 
     public List<String> getAllExcName(){
@@ -161,7 +153,6 @@ public class ClientService {
         for(Excursion ex : excursionRepository.findAll()){
             names.add(ex.getName());
         }
-
         return names;
     }
 
@@ -204,24 +195,4 @@ public class ClientService {
         }
         return false;
     }
-    /*public class objectMapper implements RowMapper<Excursion> {
-        @Override
-        public Excursion mapRow(ResultSet resultSet, int i) throws SQLException {
-            Excursion excursion = new Excursion();
-            excursion.setName(resultSet.getString("name"));
-
-            Order order = new Order();
-            order.setExcursion(excursion);
-            order.setCompleteOrNot(resultSet.getString("complete_or_not"));
-
-            GraphicEmployee graphicEmployee = new GraphicEmployee();
-            graphicEmployee.setId(resultSet.getLong("id"));
-            graphicEmployee.setDateStart(resultSet.getString("date_start"));
-            graphicEmployee.setTimeStart(resultSet.getString("time_start"));
-            graphicEmployee.setTimeEnd(resultSet.getString("time_end"));
-            graphicEmployee.setOrder(order);
-
-            return graphicEmployee;
-        }
-    }*/
 }

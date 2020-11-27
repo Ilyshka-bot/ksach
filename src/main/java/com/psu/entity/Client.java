@@ -9,13 +9,12 @@ import java.util.Set;
 @Entity
 @Table (name = "t_client")
 public class Client implements Serializable{
+
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String passportData;
 
     public Long getId() {
@@ -47,5 +46,4 @@ public class Client implements Serializable{
     public void setPassportData(String passportData) {
         this.passportData = passportData;
     }
-
 }

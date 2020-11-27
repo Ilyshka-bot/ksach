@@ -1,26 +1,22 @@
 package com.psu.entity;
 
 import org.hibernate.annotations.Cascade;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "t_employee")
 public class Employee implements Serializable {
+
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne(fetch = FetchType.EAGER)
     private Post post;
-
     private String experience;
     private String date_start;
     private String date_end;

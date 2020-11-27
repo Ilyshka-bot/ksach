@@ -2,15 +2,14 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="84feeac3-d1f7-4503-84bf-fc3fa153df55">
     <import value="org.apache.commons.lang.StringUtils"/>
 
-<!--    <style name="Base" isDefault="true" fontSize="8" pdfFontName="Courier New" pdfEncoding="UTF-8" isPdfEmbedded="false"/>-->
     <queryString>
         <![CDATA[]]>
     </queryString>
     <field name="id" class="java.lang.Long"/>
-    <field name="username" class="java.lang.String"/>
-    <field name="fullname" class="java.lang.String"/>
-    <field name="name" class="java.lang.String"/>
-    <field name="mail" class="java.lang.String"/>
+    <field name="username"/>
+    <field name="fullname"/>
+    <field name="name"/>
+    <field name="mail"/>
     <background>
         <band splitType="Stretch"/>
     </background>
@@ -52,13 +51,6 @@
                 </textElement>
                 <text><![CDATA[Mail]]></text>
             </staticText>
-<!--            <staticText>-->
-<!--                <reportElement x="314" y="10" width="70" height="20" uuid="09b47abe-09b2-479a-bb76-9770e361a23c"/>-->
-<!--                <textElement>-->
-<!--                    <font isBold="true"/>-->
-<!--                </textElement>-->
-<!--                <text><![CDATA[Fullname]]></text>-->
-<!--            </staticText>-->
             <staticText>
                 <reportElement x="364" y="10" width="100" height="20" uuid="c258f47b-da6a-418d-a5e0-892388ec65c5"/>
                 <textElement>
@@ -78,10 +70,6 @@
                 <reportElement x="210" y="4" width="100" height="16" uuid="ba6e9cfa-6d4c-470b-8bc4-eb2e3411c21e"/>
                 <textFieldExpression><![CDATA[$F{mail}]]></textFieldExpression>
             </textField>
-<!--            <textField>-->
-<!--                <reportElement x="310" y="4" width="70" height="16" uuid="447253d3-d268-4873-b0b7-9c174c6a7c9f"/>-->
-<!--                <textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>-->
-<!--            </textField>-->
             <textField>
                 <reportElement x="360" y="4" width="100" height="16" uuid="8992d0ad-1f5e-4210-b50b-1e29dc66f119"/>
                 <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>

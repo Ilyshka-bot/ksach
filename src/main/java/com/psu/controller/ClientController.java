@@ -20,6 +20,7 @@ import javax.validation.Valid;
 
 @Controller
 public class ClientController{
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -38,7 +39,6 @@ public class ClientController{
         model.addAttribute("allExcursions", clientService.allExcursion());
         model.addAttribute("allExcursionsName", clientService.getAllExcName());
         model.addAttribute("name", String.class);
-
         return "clientWork";
     }
 
@@ -47,7 +47,6 @@ public class ClientController{
                             @RequestParam(required = true, defaultValue = "" ) String action,
                             @RequestParam(required = true, defaultValue = "" ) String serial_id,
                             Model model){
-
 
         if(action.equals("delete")){
             if(serial_id.equals(""))
@@ -74,9 +73,7 @@ public class ClientController{
 
             }
             return "redirect:/clientWork";
-
         }
-
         orderService.saveOrder(name);
         return "redirect:/clientWork";
     }
@@ -98,6 +95,7 @@ public class ClientController{
         model.addAttribute("myOrders", orderService.getNotMyOrder());
         return "clientNotOrderList";
     }
+
     @PostMapping("/clientNotOrderList")
     public String clientList(@RequestParam(defaultValue = "") String action,
                              @RequestParam(defaultValue = "" ) String serial_id,
@@ -108,7 +106,6 @@ public class ClientController{
             {
                 model.addAttribute("serialError", "Некорректный номер");
                 model.addAttribute("myOrders", orderService.getNotMyOrder());
-
                 return "clientNotOrderList";
             }
             try {
@@ -130,7 +127,6 @@ public class ClientController{
     public String clientMakeExcursion(Model model){
         model.addAttribute("objectsForm", new ListObjectExcursion());
         model.addAttribute("viewExcursionForm", new ViewExcursion());
-
         return "clientMakeExcursion";
     }
 
@@ -157,9 +153,6 @@ public class ClientController{
             return "clientMakeExcursion";
 
         clientService.insertExcursion(objectsForm, viewExcursionForm);
-
         return "redirect:/clientWork";
     }
-
-
 }
